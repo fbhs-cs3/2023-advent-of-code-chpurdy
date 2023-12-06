@@ -69,8 +69,6 @@ public class Day01 {
                     }
                 }
                 if(foundFirst) break;
-
-
             }
 
              for(int i = n.length()-1;i>=0;i--) {
