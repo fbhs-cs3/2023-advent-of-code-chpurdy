@@ -1,16 +1,20 @@
 import java.util.*;
 import java.io.*;
 
-public class Day07 {
+public class Day07p2 {
 
     static class Hand implements Comparable<Hand>{
         String cards;
         HashMap<String, Integer> counts;
-        static final String order = "AKQJT98765432";
+        static final String order = "AKQT98765432J";
 
         public Hand(String cards) {
             this.cards = cards;
             counts = new HashMap<String, Integer>();
+
+            for(int i = 0; i < order.length(); i++) {
+                counts.put(order.substring(i,i+1),0);
+            }
             for(int i = 0; i < cards.length(); i++) {
                 String c = cards.substring(i,i+1);
                 if(counts.keySet().contains(c)) {
@@ -19,6 +23,26 @@ public class Day07 {
                     counts.put(c, 1);
                 }
             }
+            
+            if(counts.get("J") != null && counts.get("J") != 5) {
+            
+                String max = "A";
+                for(String c : counts.keySet()) {
+                    if(!c.equals("J") && counts.get(c) > counts.get(max)) {
+                        max = c;
+                    }
+                }
+
+                
+
+                if(!max.equals("J")) {
+                    counts.put(max, counts.get(max) + counts.get("J"));
+                    counts.put("J",0);
+                } 
+            }
+
+            
+
         }
 
         public boolean isFive() {
@@ -120,7 +144,7 @@ public class Day07 {
     }
 
 
-    public static void part1() throws IOException {
+    public static void part2() throws IOException {
         Scanner in = new Scanner(new File("day07r.txt"));
         ArrayList<Hand> hands = new ArrayList<Hand>();
         HashMap<Hand, Long> bids = new HashMap<Hand, Long>();
@@ -141,31 +165,8 @@ public class Day07 {
         System.out.println(total);
     }
 
-    public static void part2() {
-        Scanner in = new Scanner(new File("day07.txt"));
-        ArrayList<Hand> hands = new ArrayList<Hand>();
-        HashMap<Hand, Long> bids = new HashMap<Hand, Long>();
-        
-        while(in.hasNextLine()) {
-            String[] line = in.nextLine().split(" ");
-            Hand h = new Hand(line[0]);
-            bids.put(h, Long.parseLong(line[1]));
-            hands.add(h);
-        }
-
-        String most
-
-        Collections.sort(hands);
-        long total = 0;
-        for(int i = 0; i < hands.size(); i++) {
-            System.out.println(hands.get(i));
-            total += (i+1) * bids.get(hands.get(i));
-        }
-        System.out.println(total);
-    }
-
     public static void main(String[] args) throws IOException {
-        part1();
+        part2();
     }
 
 }
